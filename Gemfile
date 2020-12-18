@@ -14,6 +14,8 @@ gem 'sorcery'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  # 課題1、RSpec gemを追加する
+  gem 'rspec-rails', '~> 4.0.1'
 end
 
 group :development do
