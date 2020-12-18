@@ -16,6 +16,8 @@ group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   # 課題1、RSpec gemを追加する
   gem 'rspec-rails', '~> 4.0.1'
+  # 課題1、factory_botを追加する
+  gem 'factory_bot_rails'
 end
 
 group :development do
