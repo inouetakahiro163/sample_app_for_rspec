@@ -29,5 +29,14 @@ module RspecSample
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    # 課題1、ジェネレータの設定
+    config.generators do |g|
+      g.test_framework :rspec,
+        fixtures: true,
+        view_specs: false,
+        helper_specs: false,
+        routing_specs: false
+    end
   end
 end
