@@ -24,5 +24,11 @@ RSpec.describe Task, type: :model do
       task.valid?
       expect(task.errors[:title]).to include("has already been taken")
     end
+
+    it 'is valid with a another title' do
+      FactoryBot.create(:task)
+      task = FactoryBot.build(:task, title: "anotherone")
+      expect(task).to be_valid
+    end
   end
 end
