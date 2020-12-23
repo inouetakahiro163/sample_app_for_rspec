@@ -9,27 +9,27 @@ RSpec.describe Task, type: :model do
     end
 
     it 'is invalid without title' do 
-      task = build(:task, title: nil)
-      task.valid?
-      expect(task.errors[:title]).to include("can't be blank")
+      task_without_title = build(:task, title: "")
+      expect(task_without_title).to be_invalid
+      expect(task_without_title.errors[:title]).to include("can't be blank")
     end
 
     it 'is invalid without status' do 
-      task = build(:task, status: nil)
-      expect(task).to_not be_valid
+      task_without_status = build(:task, status: nil)
+      expect(task_without_status).to_not be_valid
     end
 
     it 'is invalid with a duplicate title' do
       task = create(:task)
-      task = build(:task)
-      task.valid?
+      task_with_duplicated_title = build(:task)
+      task_with_duplicated_title.valid?
       expect(task.errors[:title]).to include("has already been taken")
     end
 
     it 'is valid with a another title' do
       task = create(:task)
-      task = build(:task, title: "anotherone")
-      expect(task).to be_valid
+      task_with_another_title = build(:task, title: "anotherone")
+      expect(task_with_another_title).to be_valid
     end
   end
 end
