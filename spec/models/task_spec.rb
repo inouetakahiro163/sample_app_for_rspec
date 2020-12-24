@@ -16,14 +16,15 @@ RSpec.describe Task, type: :model do
 
     it 'is invalid without status' do 
       task_without_status = build(:task, status: nil)
-      expect(task_without_status).to_not be_valid
+      expect(task_without_status).to be_invalid
+      expect(task_without_status.errors[:status]).to include("can't be blank")
     end
 
     it 'is invalid with a duplicate title' do
       task = create(:task)
-      task_with_duplicated_title = build(:task)
-      task_with_duplicated_title.valid?
-      expect(task.errors[:title]).to include("has already been taken")
+      task_with_duplicated_title = build(:task, title: task.title)
+      expect(task_with_duplicated_title).to be_invalid
+      expect(task_with_duplicated_title.errors[:title]).to include("has already been taken")
     end
 
     it 'is valid with a another title' do
