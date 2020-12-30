@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Users', type: :system do
   # userの遅延読み込みletを定義
   let(:user){ FactoryBot.create(:user) }
-  
+
   describe 'Before_login' do
     describe 'create new user' do
       context 'fill_in collect' do
@@ -40,14 +40,30 @@ RSpec.describe 'Users', type: :system do
           expect(page).to have_content "Email can't be blank"
         end
       end
-      context '登録済のメールアドレスを使用' do
-        it 'ユーザーの新規作成が失敗する'
+      context 'duplicate email' do
+        it 'fail create new user' do
+          # Signupページへ
+          visit sign_up_path
+          # Emailが未入力
+          fill_in "Email", with: user.email
+          # passwordの入力
+          fill_in "Password", with: "password"
+          # Password confirmationの入力
+          fill_in "Password confirmation", with: "password"
+          # SignUpボタンを押す
+          click_button "SignUp"
+
+          expect(current_path).to eq users_path
+          expect(page).to have_content "Email has already been taken"
+        end
       end
     end
 
     describe 'マイページ' do
       context 'ログインしていない状態' do
-        it 'マイページへのアクセスが失敗する'
+        it 'マイページへのアクセスが失敗する' do
+          
+        end
       end
     end
   end
