@@ -93,13 +93,40 @@ RSpec.describe 'Users', type: :system do
           
         end
       end
-      context 'メールアドレスが未入力' do
-        it 'ユーザーの編集が失敗する'
+      context 'email is not fill in' do
+        it 'fail to edit user' do
+          visit edit_user_path(user)
+          # Emailの入力
+          fill_in "Email", with: nil
+          # passwordの入力
+          fill_in "Password", with: "password"
+          # Password confirmationの入力
+          fill_in "Password confirmation", with: "password"
+          # SignUpボタンを押す
+          click_button "Update"
+
+          expect(current_path).to eq user_path(user)
+          expect(page).to have_content "Email can't be blank"
+        end
       end
-      context '登録済のメールアドレスを使用' do
-        it 'ユーザーの編集が失敗する'
+      context 'already exsisted email' do
+        it 'fail to edit user' do
+          another_user = create(:user)
+          visit edit_user_path(user)
+          # Emailの入力
+          fill_in "Email", with: another_user.email
+          # passwordの入力
+          fill_in "Password", with: "password"
+          # Password confirmationの入力
+          fill_in "Password confirmation", with: "password"
+          # SignUpボタンを押す
+          click_button "Update"
+
+          expect(current_path).to eq user_path(user)
+          expect(page).to have_content "Email has already been taken"
+        end
       end
-      context '他ユーザーの編集ページにアクセス' do
+      context 'access to another users edit page' do
         it '編集ページへのアクセスが失敗する'
       end
     end
