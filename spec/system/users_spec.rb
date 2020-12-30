@@ -127,13 +127,23 @@ RSpec.describe 'Users', type: :system do
         end
       end
       context 'access to another users edit page' do
-        it '編集ページへのアクセスが失敗する'
+        it '編集ページへのアクセスが失敗する' do
+          another_user = create(:user)
+          visit edit_user_path(another_user)
+          
+          expect(page).to have_content "Forbidden access."
+        end
       end
     end
 
     describe 'マイページ' do
       context 'タスクを作成' do
-        it '新規作成したタスクが表示される'
+        it '新規作成したタスクが表示される' do
+          user.tasks.create(title: 'test_title', status: :todo)
+          visit user_path(user)
+          expect(page).to have_content('You have 1 task.')
+          expect(page).to have_content('test_title')
+        end
       end
     end
   end
