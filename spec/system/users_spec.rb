@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Users', type: :system do
+  # login処理をsupportから呼び込む
+  include LoginSupport
   # userの遅延読み込みletを定義
   let(:user){ FactoryBot.create(:user) }
 
@@ -59,7 +61,7 @@ RSpec.describe 'Users', type: :system do
       end
     end
 
-    describe 'mypageへ遷移する' do
+    describe 'link to mypage' do
       context 'before login' do
         it 'fail to access mypage' do
           visit user_path(user)
@@ -71,9 +73,25 @@ RSpec.describe 'Users', type: :system do
   end
 
   describe 'After_login' do
-    describe 'ユーザー編集' do
-      context 'フォームの入力値が正常' do
-        it 'ユーザーの編集が成功する'
+    # user新規をcreate、login処理
+    before { login_as(user) }
+    describe 'edit user' do
+      context 'fill_in correct' do
+        it 'success edit user' do
+          visit edit_user_path(user)
+          # Emailの入力
+          fill_in "Email", with: "test@example.com"
+          # passwordの入力
+          fill_in "Password", with: "password"
+          # Password confirmationの入力
+          fill_in "Password confirmation", with: "password"
+          # SignUpボタンを押す
+          click_button "Update"
+
+          expect(current_path).to eq user_path(user)
+          expect(page).to have_content "User was successfully updated."
+          
+        end
       end
       context 'メールアドレスが未入力' do
         it 'ユーザーの編集が失敗する'
