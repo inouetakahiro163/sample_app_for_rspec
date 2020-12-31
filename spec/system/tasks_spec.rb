@@ -22,12 +22,6 @@ RSpec.describe "Tasks", type: :system do
         end
       end
     end
-
-    describe 'マイページへの遷移' do
-      context 'ログインしていない場合' do
-        it 'マイページへの遷移ができない'
-      end
-    end
   end
 
   describe 'ログイン後' do
