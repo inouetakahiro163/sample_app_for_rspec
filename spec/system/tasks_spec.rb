@@ -15,8 +15,11 @@ RSpec.describe "Tasks", type: :system do
 
     describe 'タスクの編集' do
       context 'ログインしていない場合' do
-        it 'タスクの編集ができない'
-
+        it 'タスクの編集ができない' do
+          visit edit_task_path(task)
+          expect(page).to have_content('Login required')
+          expect(current_path).to eq login_path
+        end
       end
     end
 
