@@ -51,14 +51,26 @@ RSpec.describe "Tasks", type: :system do
       let!(:task){ create(:task, user: user) }
       context 'ログインした場合' do
         it 'タスクの編集ができる' do
-          visit 
+          visit edit_task_path(task)
+          fill_in 'Title', with: 'test'
+          fill_in 'Content', with: 'test_content'
+          select 'doing', from: 'Status'
+          click_button 'Update Task'
+          expect(page).to have_content 'Task was successfully updated.'
+          expect(page).to have_content 'test'
+          expect(page).to have_content 'test_content'
+          expect(page).to have_content 'doing'
+          expect(current_path).to eq task_path(task)
         end
       end
     end
 
     describe 'タスクの削除' do
+      let!(:task){ create(:task, user: user) }
       context 'ログインした場合' do
-        it 'タスクの削除ができる'
+        it 'タスクの削除ができる' do
+          
+        end
       end
     end
   end
