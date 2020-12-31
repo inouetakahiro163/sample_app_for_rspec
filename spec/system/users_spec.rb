@@ -4,7 +4,7 @@ RSpec.describe 'Users', type: :system do
   # login処理をsupportから呼び込む
   include LoginSupport
   # userの遅延読み込みletを定義
-  let(:user){ FactoryBot.create(:user) }
+  let(:user){ create(:user) }
 
   describe 'Before_login' do
     describe 'create new user' do
