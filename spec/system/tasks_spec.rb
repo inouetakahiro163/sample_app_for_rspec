@@ -80,6 +80,18 @@ RSpec.describe "Tasks", type: :system do
           expect(current_path).to eq task_path(task)
         end
       end
+
+      context '登録済みのタイトルを入力' do
+        it 'タスクの新規作成が失敗する' do
+          visit new_task_path
+          another_task = create(:task)
+          fill_in 'Title', with: another_task.title
+          fill_in 'Content', with: 'test_content'
+          click_button 'Create Task'
+          expect(page).to have_content 'Title has already been taken'
+          expect(current_path).to eq tasks_path
+        end
+      end
     end
 
     describe 'タスクの削除' do
