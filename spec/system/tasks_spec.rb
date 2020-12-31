@@ -69,7 +69,11 @@ RSpec.describe "Tasks", type: :system do
       let!(:task){ create(:task, user: user) }
       context 'ログインした場合' do
         it 'タスクの削除ができる' do
-          
+          visit tasks_path
+          click_link 'Destroy'
+          expect(current_path).to eq tasks_path
+          expect(page).to have_content 'Task was successfully destroyed.'
+          expect(page).not_to have_content task.title
         end
       end
     end
